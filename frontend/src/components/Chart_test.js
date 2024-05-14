@@ -77,24 +77,31 @@ if (Array.isArray(course)){
       if (type !== 'All' && group !=='All'){
         data.labels =  course.filter(x => (x.type == type && x.group == group)).map(x=>x.course_id)
         data.datasets[0].data=course.filter(x => (x.type == type && x.group == group)).map(x=>x.nb_student)
+        data.datasets[1].data=course.filter(x => (x.type == type && x.group == group)).map(x=>x.nb_vit)
+        data.datasets[2].data=course.filter(x => (x.type == type && x.group == group)).map(x=>x.nb_stud_ass)
+
       }
       else if (type == 'All' && group =='All'){
         data.labels =  course.map(x => x.course_id)
         data.datasets[0].data=course.map(x => x.nb_student)
-      
-      
+        data.datasets[1].data=course.map(x => x.nb_vit)
+        data.datasets[2].data=course.map(x => x.nb_stud_ass)      
       
       }
       else if (type == 'All'){
         data.labels =  course.filter(x => x.group == group).map(x=>x.course_id)
         data.datasets[0].data=course.filter(x => x.group == group).map(x=>x.nb_student)
-      
+        data.datasets[1].data=course.filter(x => x.group == group).map(x=>x.nb_vit)
+        data.datasets[2].data=course.filter(x => x.group == group).map(x=>x.nb_stud_ass)
+
       
       }
       else{
         data.labels =  course.filter(x => x.type == type).map(x=>x.course_id)
         data.datasets[0].data=course.filter(x => x.type == type).map(x=>x.nb_student)
-        
+        data.datasets[1].data=course.filter(x => x.type == type).map(x=>x.nb_vit)
+        data.datasets[2].data=course.filter(x => x.type == type).map(x=>x.nb_stud_ass)
+
       
       }
 

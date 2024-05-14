@@ -19,7 +19,7 @@ role_choices = (
     ('P2','P2'),
     ('F2','F2'),
     ('L','L'),
-    ('Ext','Ext')
+    ('Ext','Ext'),
 )
 
 groupe_choices = (
@@ -35,6 +35,7 @@ course_group_choices = (
     ('p','p'),
     ('t','t'),
     ('i','i'),
+    ('off','off'),
 )
 
 course_type_choices = (
@@ -106,24 +107,24 @@ arsverk_choices= (
 
 
 
-class UserManager(BaseUserManager):
-    def create_user(self,username,password=None,**extra_fields):
-        if not username:
-            raise ValueError('Username is a required field')
+# class UserManager(BaseUserManager):
+#     def create_user(self,username,password=None,**extra_fields):
+#         if not username:
+#             raise ValueError('Username is a required field')
         
-        user=self.model(username=username,**extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+#         user=self.model(username=username,**extra_fields)
+#         user.set_password(password)
+#         user.save(using=self._db)
+#         return user
     
-    def create_superuser(self,username, password=None, **extra_fields): 
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        return self.create_user(username, password, **extra_fields)
-class User(AbstractUser):
-    objects = UserManager()
-    pass
+#     def create_superuser(self,username, password=None, **extra_fields): 
+#         extra_fields.setdefault('is_staff', True)
+#         extra_fields.setdefault('is_superuser', True)
+#         return self.create_user(username, password, **extra_fields)
 
+class User(AbstractUser):
+    # objects = UserManager()
+    pass
 
 
 
@@ -224,12 +225,14 @@ class Person(models.Model):
      
     courses = models.ManyToManyField(
         Course,
+        through='PersonCourse',
         null = True,
         related_name='courses'
     )
 
     activities = models.ManyToManyField(
         Position_Activity,
+        through='PersonActivity',
         related_name='activities'
     )
 
