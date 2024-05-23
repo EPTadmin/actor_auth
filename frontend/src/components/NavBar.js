@@ -15,8 +15,8 @@ import InfoIcon from '@mui/icons-material/Info';
 import MenuIcon from '@mui/icons-material/Menu';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import { IconButton } from '@mui/material';
-// import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
-// import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import EnergySavingsLeafIcon from '@mui/icons-material/EnergySavingsLeaf';
 import RecentActorsIcon from '@mui/icons-material/RecentActors';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
@@ -27,6 +27,8 @@ import WavesIcon from '@mui/icons-material/Waves';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SpeedIcon from '@mui/icons-material/Speed';
 import ScoreIcon from '@mui/icons-material/Score';
+import BarDispatch from './Chart_dispatch';
+
 
 export default function Navbar(props) {
 
@@ -82,28 +84,43 @@ export default function Navbar(props) {
               </ListItem>
               <br></br>
 
-            {/* <a>Create new entries</a>
-            <ListItem disablePadding>
+            <a>Create new entries</a>
+            {/* <ListItem disablePadding>
                 <ListItemButton component ={Link} to ="/create" selected={"/create" === path}>
                   <ListItemIcon>
                     <PlaylistAddIcon/>
                   </ListItemIcon>
                   <ListItemText primary={"Create a new course"} />
                 </ListItemButton>
-              </ListItem> */}
-              
-              {/* <ListItem disablePadding>
-                <ListItemButton component ={Link} to ="/create_person" selected={"/create_person" === path}>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton component ={Link} to ="/create_person" selected={"/create" === path}>
                   <ListItemIcon>
-                    <PersonAddAlt1Icon/>
+                    <PlaylistAddIcon/>
                   </ListItemIcon>
                   <ListItemText primary={"Create a new person"} />
                 </ListItemButton>
+              </ListItem>               */}
+              <ListItem disablePadding>
+                <ListItemButton component ={Link} to ="/create_person_course" selected={"/create_person_course" === path}>
+                  <ListItemIcon>
+                    <PersonAddAlt1Icon/>
+                  </ListItemIcon>
+                  <ListItemText primary={"Create add new person to a course"} />
+                </ListItemButton>
+              </ListItem>
+
+
+                            {/* <br></br>
+                            <ListItem  disablePadding>
+                <ListItemButton component ={Link} to ="/contribution" selected={"/contribution" === path}>
+                  <ListItemIcon>
+                    <RecentActorsIcon/>
+                  </ListItemIcon>
+                  <ListItemText primary={"Contribution"} />
+                </ListItemButton>
               </ListItem> */}
-
-
-                            <br></br>
-
+              <br></br>
             <a>Graphs</a>
               <ListItem disablePadding >
                 <ListItemButton component ={Link} to ="/chart_test" selected={"/chart_test" === path}>
@@ -114,7 +131,8 @@ export default function Navbar(props) {
                 </ListItemButton>
               </ListItem>
 
-
+              <br></br>
+            <a>Overview by group</a>
 
               <ListItem disablePadding>
                 <ListItemButton component ={Link} to ="/chart_courses_i" selected={"/chart_courses_i" === path}>
@@ -148,6 +166,17 @@ export default function Navbar(props) {
                   <ListItemText primary={"Thermo-Fluid's Courses"} />
                 </ListItemButton>
               </ListItem>
+              {/* <ListItem disablePadding>
+                <ListItemButton component ={Link} to ="/chart_courses_all" selected={"/chart_courses_all" === path}>
+                  <ListItemIcon>
+                    <WavesIcon/>
+                  </ListItemIcon>
+                  <ListItemText primary={"all Courses"} />
+                </ListItemButton>
+              </ListItem> */}
+
+<br></br>
+            <a>Full Overview</a>
               <ListItem disablePadding>
                 <ListItemButton component ={Link} to ="/chart_load" selected={"/chart_load" === path}>
                   <ListItemIcon>
@@ -156,6 +185,14 @@ export default function Navbar(props) {
                   <ListItemText primary={"Full Overview"} />
                 </ListItemButton>
               </ListItem>
+              {/* <ListItem disablePadding>
+                <ListItemButton component ={Link} to ="/chart_dispatch" selected={"/chart_dispatch" === path}>
+                  <ListItemIcon>
+                    <SpeedIcon/>
+                  </ListItemIcon>
+                  <ListItemText primary={"Dispatch"} />
+                </ListItemButton>
+              </ListItem> */}
               <ListItem disablePadding>
                 <ListItemButton component ={Link} to ="/chart_sp" selected={"/chart_sp" === path}>
                   <ListItemIcon>

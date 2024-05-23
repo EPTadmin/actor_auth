@@ -4,19 +4,28 @@ import AxiosInstance from './Axios';
 import { useState } from 'react';
 import { useMemo } from 'react';
 import { MaterialReactTable } from 'material-react-table';
-import { Box } from '@mui/material';
+import { Box,   useMediaQuery } from '@mui/material';
 import { IconButton } from '@mui/material';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import {Link} from 'react-router-dom';
 
 
-const Person_course = () => {
+const Contribution = () => {
     const[myData, setMydata]=useState()
     const[loading,setLoading] = useState(true)
 
 
      const GetData = () => {
         AxiosInstance.get(`person_course/`).then((res) => {
+          console.log(res)
+          let d = res.data
+          console.log('d',d)
+          // for (let i=0 ; i<d.length ;i++){
+          //   d[i]['courses'] = d[i]['courses'] && d[i]['courses'].map(e=> <>{e.course_id} {e.name}<br/></>)  
+          //   // d[i]['courses'] = [1, 2, 3, 4]
+          // }
+
+          
            setMydata(res.data) 
            console.log(res.data)
            setLoading(false)
@@ -32,21 +41,11 @@ const Person_course = () => {
 
 
 
-    
+
 
    
       const columns = useMemo(
         () => [
-          // {
-          //   accessorKey: 'person', //normal accessorKey
-          //   header: 'person ID',
-          //   size: 3,
-          // },
-          // {
-          //   accessorKey: 'course', //normal accessorKey
-          //   header: 'course ID',
-          //   size: 3,
-          // },
           {
             accessorKey: 'person_full', //normal accessorKey
             header: 'Name',
@@ -65,15 +64,12 @@ const Person_course = () => {
             size: 4,
           },
 
-          
-
         ],
         [],
       );
     
 
     
-      
 
 
 
@@ -81,28 +77,39 @@ const Person_course = () => {
         <div>
             { loading ? <p>Loading data ...</p> :
             <MaterialReactTable 
+            // isMultiSortEvent={true} 
+            // maxMultiSortColCount={3}
             initialState={{
-
+              
+              sorting:
+                [{
+                  id :'semester',
+                  desc : false,
+                }],
+              
               columnVisibility: { description: false },
-            
+              pagination:{
+                pageSize:300,
+                pageIndex:0, },
               showColumnFilters: true,
-      
-              sorting: [{ id: 'tableOption', desc: false }],
+              // enablePagination:false,
       
             }}
+                enableRowActions
                 columns={columns} 
                 data={myData}
-                enableRowActions
+                enableColumnFilters
+                
                 renderRowActions={({row}) => (
                     <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
 
-                    <IconButton color="secondary" component = {Link} to={`edit_teaching/${row.original.id}`}>
+                    <IconButton color="secondary" component = {Link} to={`edit/${row.original.id}`}>
                         <EditIcon />
                     </IconButton>
 
-                    <IconButton color="error" component = {Link} to={`delete_person_course/${row.original.id}`}>
+                    {/* <IconButton color="error" component = {Link} to={`delete/${row.original.id}`}>
                         <DeleteIcon />
-                    </IconButton>
+                    </IconButton> */}
                     </Box>
       )}
 
@@ -115,4 +122,4 @@ const Person_course = () => {
 
 
 
-export default Person_course
+export default Contribution

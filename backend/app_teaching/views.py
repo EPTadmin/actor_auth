@@ -1,56 +1,56 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
 from .models import Course,Person,PersonCourse,User
 from .serializers import *
 from rest_framework.response import Response
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model, authenticate
+from django.contrib.auth import login, logout
+from  django.contrib.auth.middleware import get_user           
+from rest_framework.views import APIView
 
-                   
+# User = get_user_model()
+
+# class RegisterViewset(viewsets.ViewSet):
+#     permission_classes =[permissions.AllowAny]
+#     queryset = User.objects.all()
+#     serializer_class =RegisterSerializers
+
+#     def create(self, request):
+#         serializer = self.serializer_class(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         else:
+#             return Response(serializer.errors, status=400)
 
 
-User = get_user_model()
+# class LoginViewset(viewsets.ViewSet):
+#     permission_classes=[permissions.AllowAny]
+#     serializer_class = LoginSerializers
 
-class RegisterViewset(viewsets.ViewSet):
-    permission_classes =[permissions.AllowAny]
-    queryset = User.objects.all()
-    serializer_class =RegisterSerializers
+#     def create(self, request):
+#         serializer = self.serializer_class(data=request.data)
 
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors, status=400)
+        # if serializer.is_valid():
+        #     username = serializer.validated_data['username']
+        #     password = serializer.validated_data['password']
 
+        #     user = authenticate(request, username=username, password=password)
 
-class LoginViewset(viewsets.ViewSet):
-    permission_classes=[permissions.AllowAny]
-    serializer_class = LoginSerializers
-
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
-
-        if serializer.is_valid():
-            username = serializer.validated_data['username']
-            password = serializer.validated_data['password']
-
-            user = authenticate(request, username=username, password=password)
-
-            if user:
-                _, token=AuthToken.objects.create(user)
-                return Response(
-                    {
-                        "user":self.serializer_class(user).data,
-                        "token" : token
-                    }
-                )
-            else:
-                return Response({"error":"invalid credentials"},status=401)
-        else:
-            return Response(serializer.errors,status=400)
+        #     if user:
+        #         _, token=AuthToken.objects.create(user)
+        #         return Response(
+        #             {
+        #                 "user":self.serializer_class(user).data,
+        #                 "token" : token
+        #             }
+        #         )
+        #     else:
+        #         return Response({"error":"invalid credentials"},status=401)
+        # else:
+        #     return Response(serializer.errors,status=400)
 
 
 class CourseViewset(viewsets.ViewSet):
@@ -163,6 +163,12 @@ class PersonCourseViewset(viewsets.ViewSet):
             return Response(serializer.data)
         else:
             return Response(serializer.errors,status=400)
+        
+    def destroy(self, request, pk=None):
+        personcourse = self.queryset.get(pk=pk)
+        personcourse.delete()
+        return Response(status=204)
+    
 
 class PersonActivityViewset(viewsets.ViewSet):
     permission_classes = [permissions.AllowAny]
@@ -196,7 +202,12 @@ class PersonActivityViewset(viewsets.ViewSet):
             return Response(serializer.data)
         else:
             return Response(serializer.errors,status=400)
-
+        
+    def destroy(self, request, pk=None):
+        personactivity = self.queryset.get(pk=pk)
+        personactivity.delete()
+        return Response(status=204)
+    
 class PositionActivityViewset(viewsets.ViewSet):
     permission_classes = [permissions.AllowAny]
     queryset = Position_Activity.objects.all()
@@ -222,3 +233,34 @@ class PositionActivityViewset(viewsets.ViewSet):
 def home(request):
     return HttpResponse("This is the home page")
 
+class LDAPLogin(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+        data = request.data
+        serializer = LoginSerializers(data=data)
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.check_user(data)
+            login(request, user, backend="django_python3_ldap.auth.LDAPBackend")
+            try:
+                login_user = User.objects.get(username=user.username)
+            except:
+                login_user = User(user)
+                login_user.save()
+                
+            return Response(UserSerializer(login_user).data, status=status.HTTP_200_OK)
+
+class LDAPLogout(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+    def post(self, request):
+        logout(request)
+        return Response(status=status.HTTP_200_OK)
+    
+class UserView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        user = get_user(request) 
+        return Response({'user': serializer.data}, status=status.HTTP_200_OK)
