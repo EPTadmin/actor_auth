@@ -8,8 +8,11 @@ import FormHelperText from '@mui/material/FormHelperText';
 
 export default function MyCoursechooseField(props) {
     const{label,name, width,control,options} = props
-    console.log('options',options)
-
+    options.sort(function(a, b) {
+        var textA = a.course_id.toLowerCase();
+        var textB = b.course_id.toLowerCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    });
 
   return (
 

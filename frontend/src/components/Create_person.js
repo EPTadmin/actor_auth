@@ -19,14 +19,14 @@ import MyMultiCourseField from './forms/MyMultiCourseField'
 // import MyPositionFieldMulti from './forms/MyPositionFieldMulti'
 
 const Create= () => {
-    const[course, setCourse]=useState()
+    const[person, setPerson]=useState()
     const[loading,setLoading] = useState(true)
     
     
     const GetData = () => {
-    AxiosInstance.get(`course/`).then((res) => {
-        setCourse(res.data) 
-        console.log('courses',res.data)
+    AxiosInstance.get(`person/`).then((res) => {
+        setPerson(res.data) 
+        console.log('person',res.data)
         setLoading(false)
 
       })
@@ -40,12 +40,13 @@ const Create= () => {
 
     const navigate = useNavigate()
     const defaultValues ={
+        
         first_name:'',
         middle_name:'',
         last_name:'',
-        position:'',
-        groupe:'',
-        courses:'',
+        // group:'',
+        // position:'',
+
        
 
     }
@@ -69,9 +70,8 @@ const Create= () => {
             first_name:data.first_name,
             middle_name:data.middle_name,
             last_name:data.last_name,
+            group:data.group,
             position:data.position,
-            groupe:data.groupe,
-            courses:data.courses,
 
 
         })
@@ -146,7 +146,7 @@ const Create= () => {
                  width={'15%'}
                 />  
                 {/* works with multicoursefield */}
-                 <MyMultiCourseField2
+                 {/* <MyMultiCourseField2
                  label = "Course"
                  name="courses"
                  control={control}
@@ -154,7 +154,7 @@ const Create= () => {
                  options = {course}
 
             
-                />  
+                />   */}
 
             </Box>
 

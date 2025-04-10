@@ -246,6 +246,12 @@ class PersonCourse(models.Model):
     person = models.ForeignKey(Person,on_delete=models.CASCADE) 
     course = models.ForeignKey(Course,on_delete=models.CASCADE) 
     amount = models.IntegerField()
+    comment = models.CharField(
+        unique=False,
+        null=True,
+        blank=True,
+        max_length=50
+    )
 
     # def __int__(self):
     #     return self.amount

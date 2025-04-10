@@ -8,9 +8,13 @@ import FormHelperText from '@mui/material/FormHelperText';
 
 export default function MyPersonField(props) {
     const{label,name, width,control,options} = props
-    console.log('options',options)
+    options.sort(function(a, b) {
+        var textA = a.last_name.toLowerCase();
+        var textB = b.last_name.toLowerCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    });
 
-
+    
   return (
 
         <Controller
@@ -32,9 +36,8 @@ export default function MyPersonField(props) {
                     error = {!!error}  
                     >
                     {
-                        
                         options.map((option) => (
-                            <MenuItem value={option.first_name + ' ' + option.last_name}>{option.first_name} {option.last_name}  {console.log(value)}
+                            <MenuItem value={option.first_name + ' ' + option.last_name}>{option.last_name} {option.first_name}  
 
                             <em></em>
                         </MenuItem>

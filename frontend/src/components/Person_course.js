@@ -30,6 +30,8 @@ const Person_course = () => {
    
     },[])
 
+    console.log('person course',myData)
+
 
 
     
@@ -63,6 +65,11 @@ const Person_course = () => {
             accessorKey: 'amount', //normal accessorKey
             header: 'Amount',
             size: 4,
+          },
+          {
+            accessorKey: 'comment', //normal accessorKey
+            header: 'Comment',
+            size: 10,
           },
 
           
